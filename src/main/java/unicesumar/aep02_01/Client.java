@@ -2,6 +2,8 @@ package unicesumar.aep02_01;
 
 import javax.swing.*;
 
+import org.json.JSONObject;
+
 import java.awt.Font;
 import java.awt.event.*;
 import java.io.*;
@@ -42,17 +44,17 @@ public class Client extends JFrame implements ActionListener {
 		setVisible(true);
 	}
 
-	public void enviaMensagem(String msg) {
+	public void enviaMensagem(JSONObject obj) {
 		try {
 			conexao = new Socket("localhost", PORT);
-			caixa.append("Conectado a " + conexao.getRemoteSocketAddress() + "\n");
+			caixa.append("Conectado a " + conexao.getRemoteSocketAddress() + "\n\n");
 			OutputStream os = conexao.getOutputStream();
 			PrintWriter pw = new PrintWriter(os);
-			pw.println(msg);
+			pw.println(obj);
 			pw.close();
 			conexao.close();
 		} catch (IOException e) {
-			caixa.append("[ERRO] " + e.getMessage() + "\n");
+			caixa.append("[ERRO] " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		}
 	}
@@ -60,13 +62,17 @@ public class Client extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		Object source = ae.getSource();
 		if (source == menucliente) {
+				JSONObject obj = new JSONObject();
 				String mensagemenviar = JOptionPane.showInputDialog(null, "Digite a mensagem a enviar:", "teste");
-				enviaMensagem(mensagemenviar);
-				caixa.append("[Enviado] " + mensagemenviar + "\n");
+				obj.put("msg", mensagemenviar);
+				enviaMensagem(obj);
+				caixa.append("[Enviado] " + obj + "\n\n");
 		} else if(source == menudiretorio) {
+			 	JSONObject obj = new JSONObject();
 				String mensagemenviar = JOptionPane.showInputDialog(null, "Digite o diretorio a pesquisar:", "D:\\");
-				enviaMensagem(mensagemenviar);
-				caixa.append("[Enviado] " + mensagemenviar + "\n");
+				obj.put("list", mensagemenviar);
+				enviaMensagem(obj);
+				caixa.append("[Enviado] " + obj + "\n\n");
 		}
 	}
 }

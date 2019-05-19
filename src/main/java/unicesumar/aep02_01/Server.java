@@ -52,15 +52,15 @@ public class Server extends JFrame {
 		try {
 			ServerSocket socket = new ServerSocket(PORT);
 			socket.setReuseAddress(true);
-			caixa.append("Servidor ouvindo na porta " + PORT + "\n");
+			caixa.append("Servidor ouvindo na porta " + PORT + "\n\n");
 
 			while (true) {
 				Socket toClient = socket.accept();
-	            caixa.append("Conectado a " + toClient.getRemoteSocketAddress() + "\n");
+	            caixa.append("Conectado a " + toClient.getRemoteSocketAddress() + "\n\n");
 				new ThreadServidor(toClient, caixa).start();
 			}
 		} catch (IOException e) {
-			caixa.append("[ERRO] " + e.getMessage() + "\n");
+			caixa.append("[ERRO] " + e.getMessage() + "\n\n");
 			e.printStackTrace();
 		}
 		System.out.println("Servidor finalizado.");
